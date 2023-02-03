@@ -61,7 +61,7 @@ async def main():
                 )
                 .set_footer(text="👾")
                 .add_field(
-                    name=f"You have until `{isoparse(current_turn['Expires']).strftime('%c')}` to play your turn.",
+                    name=f"Your turn expires <t:{int(isoparse(current_turn['Expires']).timestamp())}:R>.",
                     value="",
                 )
             )
