@@ -1,0 +1,17 @@
+{
+    "webhook_url": "https://discord.com/api/webhooks/XXXXXXXXX/XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX",
+    "gmr_api_url": "http://multiplayerrobot.com/api/Diplomacy",
+    "my_id": "11111111111111",
+    "gmr_auth_key": "PO1PO1PO1PO1PO1",
+    "game_name": "Your Game Name Here",
+    "gmr_discord_lut": {
+        "00000000000000000": "000000000000000000",
+        "00000000000000000": "000000000000000000",
+        "00000000000000000": "000000000000000000",
+        "00000000000000000": "000000000000000000",
+        "00000000000000000": "000000000000000000",
+        "00000000000000000": "000000000000000000",
+        "00000000000000000": "000000000000000000",
+        "00000000000000000": "000000000000000000"
+    }
+}
