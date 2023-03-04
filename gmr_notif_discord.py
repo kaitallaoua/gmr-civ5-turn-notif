@@ -1,4 +1,5 @@
 import asyncio
+import logging
 from datetime import datetime
 from json import loads
 from pathlib import Path
@@ -19,7 +20,7 @@ def find_game(games: dict[str, dict[str, str]]) -> Optional[dict[str, Optional[s
             return game
 
 
-async def main():
+async def send_notifications():
     last_player = ""
     last_expire_msg = ""
 
@@ -70,7 +71,7 @@ async def main():
                     name="Giant Multiplayer Robot",
                     icon_url="http://multiplayerrobot.com/Content/images/New_Unit_Mech_94.png",
                 )
-                .set_footer(text="👾")
+                .set_footer(text="📮")
                 .add_field(
                     name=expire_msg,
                     value="",
@@ -78,6 +79,21 @@ async def main():
             )
 
             await asyncio.sleep(SLEEP_TIME_SEC)
+
+
+async def main():
+    logging.basicConfig(
+        filename="gmr_notif_bot.log",
+        format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
+        datefmt="%Y-%m-%d %H:%M:%S %z",
+    )
+
+    logger = logging.getLogger()
+
+    try:
+        await send_notifications()
+    except Exception as e:
+        logger.exception("Program crashed, stack trace below. Error: %s", e)
 
 
 if __name__ == "__main__":
