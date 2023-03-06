@@ -5,7 +5,7 @@ from json import loads
 from pathlib import Path
 from typing import Optional
 
-from aiohttp import ClientSession
+from aiohttp import ClientSession, client_exceptions
 from dateutil.parser import isoparse
 from discord import Color, Embed, Webhook
 
@@ -30,10 +30,14 @@ async def send_notifications():
         webhook = Webhook.from_url(config["webhook_url"], session=session)
 
         while True:
-            async with session.get(
-                f"{config['gmr_api_url']}/GetGamesAndPlayers?playerIDText={config['my_id']}&authKey={config['gmr_auth_key']}"
-            ) as response:
-                players_and_games: dict[str, str] = await response.json()
+            try:
+                async with session.get(
+                    f"{config['gmr_api_url']}/GetGamesAndPlayers?playerIDText={config['my_id']}&authKey={config['gmr_auth_key']}"
+                ) as response:
+                    players_and_games: dict[str, str] = await response.json()
+            except client_exceptions.ClientConnectorError: # gmr server sometimes is unreachable
+                await asyncio.sleep(SLEEP_TIME_SEC)
+                continue
             current_game = find_game(players_and_games)
 
             if current_game is None:
