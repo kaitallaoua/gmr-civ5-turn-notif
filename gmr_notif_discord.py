@@ -23,6 +23,7 @@ def find_game(games: dict[str, dict[str, str]]) -> Optional[dict[str, Optional[s
 async def send_notifications():
     last_player = ""
     last_expire_msg = ""
+    next_player = ""
 
     first_run = True
 
@@ -60,14 +61,23 @@ async def send_notifications():
             if last_player == current_turn["UserId"] and last_expire_msg == expire_msg:
                 await asyncio.sleep(SLEEP_TIME_SEC)
                 continue
-
+            
+            next_turn_order = int(current_turn["PlayerNumber"]) + 1
+            
+            if next_turn_order == len(current_game["Players"]):
+                next_turn_order = 0
+            
+            for player in current_game["Players"]:
+                if player["TurnOrder"] == next_turn_order:
+                    next_player = player["UserId"]
+            
             last_player = current_turn["UserId"]
             last_expire_msg = expire_msg
 
             await webhook.send(
                 embed=Embed(
                     title=f"Game: {current_game['Name']}",
-                    description=f"<@{config['gmr_discord_lut'][str(current_turn['UserId'])]}> [it's your turn.](http://multiplayerrobot.com/Game#{current_game['GameId']})",
+                    description=f"<@{config['gmr_discord_lut'][str(current_turn['UserId'])]}> [it's your turn.](http://multiplayerrobot.com/Game#{current_game['GameId']}) Up next: <@{config['gmr_discord_lut'][str(next_player)]}>",
                     color=Color.purple(),
                     timestamp=datetime.now(),
                 )
