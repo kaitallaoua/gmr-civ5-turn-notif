@@ -64,7 +64,7 @@ async def send_notifications():
             
             next_turn_order = int(current_turn["PlayerNumber"]) + 1
             
-            if next_turn_order == len(current_game["Players"]:
+            if next_turn_order == len(current_game["Players"]):
                 next_turn_order = 0
             
             for player in current_game["Players"]:
